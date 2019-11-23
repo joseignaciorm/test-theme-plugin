@@ -6,7 +6,7 @@
 */
 
 /*
-    Plugin Name: My Own Metabox
+    Plugin Name: test-theme-plugin
     Description: This is a simple plugin for learning
     Version: 1.0.0
     Author: Nacho
@@ -16,7 +16,7 @@
 
 require_once ('library/class-publication.php');
 
-require_once ('library/class-activity.php');
+require_once ('library/class-event.php');
 
 require_once ('library/class-resources.php');
 

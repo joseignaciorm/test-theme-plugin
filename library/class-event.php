@@ -1,9 +1,9 @@
 <?php
 defined('ABSPATH') or die();
 
-class NarTrans_Researcher {
+class NarTrans_Event {
 
-	const POST_TYPE = 'researcher';
+	const POST_TYPE = 'event';
 
 	private static $instance = NULL;
 
@@ -11,7 +11,6 @@ class NarTrans_Researcher {
 	 * Constructor
 	 */
 	function __construct() {
-
 		// Acción registrar CPT
 		add_action('init', [$this, 'register_post_type']);
 
@@ -23,13 +22,12 @@ class NarTrans_Researcher {
 	}
 
 
-
 	/**
 	 * Registra el CPT
 	 */
 	function register_post_type() {
-		$singular_name = __('Investigador', 'nar-trans-data');
-		$general_name  = __('Investigadores', 'nar-trans-data');
+		$singular_name 	= __('Evento', 'nar-trans-data');
+		$general_name 	= __('Eventos', 'nar-trans-data');
 
 		$args = array(
 			'labels' => array(
@@ -51,8 +49,9 @@ class NarTrans_Researcher {
 			'supports' => array(
 				'title',
 				'editor',
+				//'custom-fields',
 				//'author',
-				//'thumbnail',
+				'thumbnail',
 			),
 			'public' => true,
 			'public_queryable' => false,
@@ -67,16 +66,14 @@ class NarTrans_Researcher {
 		);
 
 		register_post_type(self::POST_TYPE, $args);
-
-	} // Fín registro post type
-
+	} // Fín de registro CPT
 
 	/**
 	 * Registra las taxonomías
 	 */
 	function register_taxonomies() {
 
-	} // Fín taxonomias
+	} // Fín taxonomies
 
 
 	/**
@@ -86,7 +83,7 @@ class NarTrans_Researcher {
 
 		$meta_boxes[] = array(
 			'id' 			=> self::POST_TYPE . '_custom_fields',
-			'title' 		=> __('Datos personalizados investigadores', 'nar-trans-data'),
+			'title' 		=> __('Datos personalizados del evento', 'nar-trans-data'),
 			'post_types' 	=> array(self::POST_TYPE),
 			'context' 		=> 'advanced',
 			'priority' 		=> 'default',
@@ -99,96 +96,65 @@ class NarTrans_Researcher {
 					'type'	=> 'text',
 				],
 				[
-					'id' 	=> 'email',
-					'name' 	=> __('Email', 'nar-trans-data'),
-					'type' 	=> 'email',
+					'id' 	=> 'date_start',
+					'name' 	=> __('Fecha inicio', 'nar-trans-data'),
+					'type' 	=> 'date',
 				],
 				[
-					'id' 	=> 'phone_number',
-					'name' 	=> __('Número de teléfono', 'nar-trans-data'),
-					'type' 	=> 'text',
+					'id' 	=> 'date_end',
+					'name' 	=> __('Fecha fín', 'nar-trans-data'),
+					'type' 	=> 'date',
 				],
-				[
-					'id' 	=> 'biography',
-					'name' 	=> __('Biografía', 'nar-trans-data'),
-					'type' 	=> 'text',
-				],
-				[
-					'id' 	=> 'webpage',
-					'name' 	=> __('Web Page', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-				[
-					'id' 	=> 'facebook',
-					'name' 	=> __('Facebook', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-				[
-					'id' 	=> 'twitter',
-					'name' 	=> __('Twitter', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-				[
-					'id' 	=> 'gplus',
-					'name' 	=> __('Google Plus', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-				[
-					'id' 	=> 'linkedin',
-					'name' 	=> __('LinkedIn', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-				[
-					'id' 	=> 'researchgate',
-					'name' 	=> __('ResearchGate', 'nar-trans-data'),
-					'type' 	=> 'url',
-				],
-			),
+
+			)
 		);
-
 		return $meta_boxes;
-
-	} // Fín Metabox
-
+	}
 
 	/**
-	 * Query para mostrar asignaturas
+	 * Devuelve el nombre del CPT
 	 */
-	function get_query($args = [])
-	{
-		$defaults = [
-			'post_type' => self::POST_TYPE,
-			'meta_query' => [],
-			'orderby' => 'title',
-			'order' => 'DESC',
-		];
-
-		return new \WP_Query(wp_parse_args((array) $args, $defaults));
+	function get_post_type() {
+		return self::POST_TYPE;
 	}
+
 
 	/**
 	 * Devuelve una intancia de la clase, si no existe aún, la crea
 	 */
 	static function get_instance() {
-
 		if (!self::$instance instanceof self)
 			self::$instance = new self();
 
 		return self::$instance;
-
 	}
-}
 
-if (!function_exists('NarTrans_Researcher')) {
+	/**
+	 * Query para mostrar asignaturas
+	 */
+	function get_query($args = []) {
+		$defaults = [
+			'post_type' => self::POST_TYPE,
+			'meta_query' => [],
+			'orderby' => 'title',
+			'order' => 'ASC',
+		];
+
+		return new \WP_Query(wp_parse_args((array) $args, $defaults));
+	}
+
+} // Fín de la clase
+
+	if (!function_exists('NarTrans_Event')) {
 	/**
 	 * Función para llamar a la instancia de la clase.
 	 */
-	function NarTrans_Researcher() {
-		return NarTrans_Researcher::get_instance();
+	function NarTrans_Event() {
+		return NarTrans_Event::get_instance();
 	}
 }
 
 // Iniciar la clase
-NarTrans_Researcher();
+NarTrans_Event();
 
 ?>
