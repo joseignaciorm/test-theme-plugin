@@ -124,7 +124,7 @@ class NarTrans_Publication {
 					'type' 	=> 'number',
 				],
 				[
-					'id' 	=> 'magazine',
+					'id' 	=> 'magazine',	
 					'name' 	=> __('Nombre de la revista', 'nar-trans-data'),
 					'type' 	=> 'text',
 				],
