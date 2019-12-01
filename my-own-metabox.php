@@ -22,16 +22,87 @@ require_once ('library/class-resources.php');
 
 require_once ('library/class-researcher.php');
  
-# Function register to create metaboxes
-function my_own_custom_init_cpt() {
+/*
+	==========================================
+	 Custom Post Type
+	==========================================
+*/
+function my_own_custom_cpt() {
+    $labels = array(
+        'name'   => 'Book',
+        'singular_name' => 'Book',
+        'add_new' => 'Add New Book',
+        'all_items' => 'All Books',
+        'add_new_item' => 'Add new book',
+        'edit_item' => 'Edit Item',
+        'new_item' => 'New Book',
+        'view_item' => 'View Item',
+        'search_item' => 'Search Book',
+        'not_found' => 'No items found',
+        'not_found_in_trash' => 'No items found in trash',
+        'parent_item_colon' => 'Parent Item'
+    );
+
     $args = array(
-      'public' => true,
-      'label'  => 'Books',
-      'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
+            'labels' => $labels,
+            'public' => true,
+            'has_archive' => 'book',
+            'publicly_queryable' => true,
+            'query_var' => true,
+            'rewrite' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+            'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
+            //'taxonomies' => array('category', 'post_tag'),
+		    'menu_position' => 50,
+		    'exclude_from_search' => false
     );
     register_post_type( 'book', $args );
 }
-add_action( 'init', 'my_own_custom_init_cpt' );
+add_action( 'init', 'my_own_custom_cpt' );
+
+/*
+	==========================================
+	 Custom Taxonomy
+	==========================================
+*/
+function register_custom_taxonomy() {
+    // Add new taxonomy hierarchical
+    $labels = array(
+        'name' => 'Books_Types',
+        'singular_name' => 'Book_Type',
+        'search_items'  => 'Search Books_Types',
+        'all_items' => 'All Books_Types',
+		'parent_item' => 'Parent Book_Type',
+		'parent_item_colon' => 'Parent Book_Type:',
+		'edit_item' => 'Edit Book_Type',
+		'update_item' => 'Update Book_Type',
+		'add_new_item' => 'Add New Book_Type',
+		'new_item_name' => 'New Book_Type Name',
+		'menu_name' => 'Books_Types'
+    );
+
+    $args = array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui'   => true,
+        'show_admin_column'  => true,
+        'query_var'     => true,
+        'rewrite'   => array('slug' => 'book-type')
+    );
+
+    register_taxonomy('books-types', array('book'), $args);
+    register_taxonomy('books-tags', 'book', array(
+        'hierarchical' => false,
+        'label' => 'Books_tags',
+        'rewrite'   => array('slug' => 'book-tag')
+    ));
+
+    // Add new taxonomy NOT hierarchical
+}
+    add_action('init', 'register_custom_taxonomy');
+
+
 
 function my_own_register_metabox() {
 
@@ -42,9 +113,9 @@ function my_own_register_metabox() {
     // Metabox for posts functions
     add_meta_box('my-own-post-id', 'My own post metabox', 'my_posts_metabox_function', 'post', 'side', 'high');
 }
-
 # Register the action hook: add_action( 'add_meta_boxes', 'callback function' );
 add_action('add_meta_boxes', 'my_own_register_metabox');
+
 
 //Register a metabox Custom Post Type
 if(!function_exists('my_own_register_metabox_cpt')):
@@ -56,6 +127,7 @@ if(!function_exists('my_own_register_metabox_cpt')):
     add_action('add_meta_boxes_book', 'my_own_register_metabox_cpt');
 endif;
 
+
 // Callback function for metabox at cpt book
 function my_cpt_metabox_function() {
     var_dump(basename(__FILE__));
@@ -64,12 +136,12 @@ function my_cpt_metabox_function() {
 
 /* *** Adding Meta Boxes in the dashboard **** */
 add_action('wp_dashboard_setup', 'my_register_metabox_dashboard');
-
 if(!function_exists('my_register_metabox_dashboard')):
     function my_register_metabox_dashboard() {
         add_meta_box('wp-dashboard-id', 'My dashboard Metabox', 'wp_dashboard_function', 'dashboard', 'normal', 'high');
     }
 endif;
+
 
 if(!function_exists('remove_dashboard_metabox')):
     function remove_dashboard_metabox() {
@@ -110,5 +182,23 @@ if(!function_exists('has_children')):
     }
 endif;
 
+
+/*
+	==========================================
+	 Get custom term function
+	==========================================
+*/
+
+function get_custom_term($postId, $term) {
+    $term_list = wp_get_post_terms($postId, $term);
+    $output = '';
+    $i = 0;
+    foreach ($term_list as $term) { $i++;
+        if ($i > 1){ $output .= ','; }
+        $output .= '<a href="' . get_term_link( $term ) . '"> ' . $term->name . '</a>';
+    }
+
+    return $output;
+}
 
 ?>

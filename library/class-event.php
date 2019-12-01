@@ -40,7 +40,7 @@ class NarTrans_Event {
 				'new_item'           => sprintf(__('Nueva %s', 'nar-trans-data'), $singular_name),
 				'edit_item'          => sprintf(__('Editar %s', 'nar-trans-data'), $singular_name),
 				'view_item'          => sprintf(__('Ver %s', 'nar-trans-data'), $singular_name),
-				'all_items'          => sprintf(__('Todas las %s', 'nar-trans-data'), $general_name),
+				'all_items'          => sprintf(__('Todos los %s', 'nar-trans-data'), $general_name),
 				'search_items'       => sprintf(__('Buscar %s', 'nar-trans-data'), $general_name),
 				'parent_item_colon'  => sprintf(__('%s superior:', 'nar-trans-data'), $singular_name),
 				'not_found'          => sprintf(__('No se ha encontrado %s.', 'nar-trans-data'), $general_name),
@@ -57,7 +57,7 @@ class NarTrans_Event {
 			'public_queryable' => false,
 			'query_var' => false,
 			'rewrite' => false,
-			'has_archive' => false,
+			'has_archive' => 'eventos',
 			'hierarchical' => false,
 			'exclude_from_search' => false,
 			'capability_type' => 'post',
@@ -72,7 +72,28 @@ class NarTrans_Event {
 	 * Registra las taxonomías
 	 */
 	function register_taxonomies() {
+		$singular_name = __('Tipo de event', 'nar-trans-data');
+		$plural_name   = __('Tipos de eventos', 'nar-trans-data');
 
+		register_taxonomy('event_type', self::POST_TYPE, array(
+			'hierarchical'      => true,
+			'labels'            => array(
+				'name'              => $plural_name,
+				'singular_name'     => $singular_name,
+				'search_items'      => sprintf(__('Buscar %s', 'nar-trans-data'), $singular_name),
+				'all_items'         => sprintf(__('Todos los %s', 'nar-trans-data'), $plural_name),
+				'parent_item'       => sprintf(__('%s superior', 'nar-trans-data'), $singular_name),
+				'parent_item_colon' => sprintf(__('%s superior:', 'nar-trans-data'), $singular_name),
+				'edit_item'         => sprintf(__('Editar %s', 'nar-trans-data'), $singular_name),
+				'update_item'       => sprintf(__('Actualizar %s', 'nar-trans-data'), $singular_name),
+				'add_new_item'      => sprintf(_x('Nuevo %s', 'femenino', 'nar-trans-data'), $singular_name),
+				'new_item_name'     => sprintf(_x('Nuevo nombre de %s', 'nar-trans-data'), $singular_name),
+				'menu_name'         => $plural_name,
+			),
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+		));
 	} // Fín taxonomies
 
 

@@ -56,7 +56,7 @@ class NarTrans_Publication {
 			'public_queryable' => false,
 			'query_var' => false,
 			'rewrite' => false,
-			'has_archive' => false,
+			'has_archive' => 'publicaciones',
 			'hierarchical' => false,
 			'exclude_from_search' => false,
 			'capability_type' => 'post',
@@ -124,7 +124,7 @@ class NarTrans_Publication {
 					'type' 	=> 'number',
 				],
 				[
-					'id' 	=> 'magazine',	
+					'id' 	=> 'magazine',
 					'name' 	=> __('Nombre de la revista', 'nar-trans-data'),
 					'type' 	=> 'text',
 				],
