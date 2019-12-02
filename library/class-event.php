@@ -56,7 +56,7 @@ class NarTrans_Event {
 			'public' => true,
 			'public_queryable' => false,
 			'query_var' => false,
-			'rewrite' => false,
+			'rewrite' => [ 'slug' => 'evento' ],
 			'has_archive' => 'eventos',
 			'hierarchical' => false,
 			'exclude_from_search' => false,
@@ -93,6 +93,7 @@ class NarTrans_Event {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite' => [ 'slug' => 'tipo-de-evento' ],
 		));
 	} // Fín taxonomies
 

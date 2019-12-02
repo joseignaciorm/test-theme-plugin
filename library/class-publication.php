@@ -55,7 +55,7 @@ class NarTrans_Publication {
 			'public' => true,
 			'public_queryable' => false,
 			'query_var' => false,
-			'rewrite' => false,
+			'rewrite' => [ 'slug' => 'publicacion' ],
 			'has_archive' => 'publicaciones',
 			'hierarchical' => false,
 			'exclude_from_search' => false,
@@ -94,8 +94,27 @@ class NarTrans_Publication {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=>	array('slug' => 'tipo-publicacion')
 		));
+
+		$singular_name = __('Etiqueta', 'nar-trans-data');
+		$plural_name   = __('Etiquetas', 'nar-trans-data');
+
+		register_taxonomy('tags', self::POST_TYPE, array(
+			'hierarchical'      => false,
+			'labels'            => array(
+				'name'              => $plural_name,
+				'singular_name'     => $singular_name,
+				'rewrite'   => array('slug' => 'etiquetas')
+			),
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+		));
+		
 	} // Fín registro de las taxonomies
+
+
 
 
 	/**

@@ -57,7 +57,7 @@ class NarTrans_Resource {
 			'public' => true,
 			'public_queryable' => false,
 			'query_var' => false,
-			'rewrite' => false,
+			'rewrite' => [ 'slug' => 'recurso' ],
 			'has_archive' => 'recursos',
 			'hierarchical' => false,
 			'exclude_from_search' => false,
@@ -95,6 +95,7 @@ class NarTrans_Resource {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=> ['slug', 'categoria-recurso'],
 		));
 
 		$singular_name 	= __('Género', 'nar-trans-data');
@@ -117,6 +118,7 @@ class NarTrans_Resource {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=> ['slug', 'genero'],
 		));
 
 		$singular_name 	= __('Tipo de premio', 'nar-trans-data');
@@ -139,6 +141,7 @@ class NarTrans_Resource {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=> ['slug', 'tipo-premio'],
 		));
 
 		$singular_name 	= __('Tipo de recurso', 'nar-trans-data');
@@ -161,6 +164,7 @@ class NarTrans_Resource {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=> ['slug', 'tipo-recurso'],
 		));
 
 		$singular_name 	= __('Idioma', 'nar-trans-data');
@@ -183,6 +187,7 @@ class NarTrans_Resource {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'rewrite'			=> ['slug', 'idioma-recurso'],
 		));
 	} // Fín taxonomias
 
